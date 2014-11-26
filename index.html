@@ -7,7 +7,7 @@
     <title>eBird Explorer</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 </head>
 
 <body>
@@ -17,9 +17,9 @@
         <div id="title"><h1>eBird Explorer</h1></div>
         <div id="nav">
             <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
+                <li>How it Works</li>
+                <li>Why Explore</li>
+                <li>About eBird</li>
             </ul>
         </div>
     </div>
@@ -33,9 +33,9 @@
 
     <script type="text/javascript">
 
-        var map = L.map('map').setView([-94, 46.5], 6);
+        var map = new L.map('map').setView([44.98,-93.26], 10);
 
-        var layer L.StamenTileLayer('toner');
+        var layer = new L.StamenTileLayer("terrain");
         map.addLayer(layer);
 
     </script>

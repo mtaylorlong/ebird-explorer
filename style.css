@@ -9,18 +9,29 @@ html body {
 	}
 
 #header {
-	display:block;
-	padding: 20px;
-	background-color: #efefef;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	padding: 25px;
+	/*background-color: #efefef;*/
 }
 
 #title {
 	display: inline-block;
 }
 
+#title H1 {
+	margin-top:0;
+	margin-bottom:0;
+
+}
+
 #nav {
 	display: inline;
 	float: right;
+	margin-top:0;
+	margin-bottom:0;
 }
 
 #nav li {
@@ -33,10 +44,18 @@ html body {
 	border-radius: 4px;
 }
 
+#nav ul {
+	margin-top:0;
+	margin-bottom:0;
+}
+
 #map {
-	display:block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top:90px;
 	background-color: gray;
-	height:500px;
 }
 
 /*#footer {
