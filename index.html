@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!--Edit the title of the page-->
+    <title>eBird Explorer</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div id="header">
+        <div id="title"><h1>eBird Explorer</h1></div>
+        <div id="nav">
+            <ul>
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- JavaScript Section-->
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+
+    <script type="text/javascript">
+
+        var map = L.map('map').setView([-94, 46.5], 6);
+
+        var layer L.StamenTileLayer('toner');
+        map.addLayer(layer);
+
+    </script>
+
+</body>
+</html>
