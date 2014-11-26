@@ -38,8 +38,10 @@ html body {
 	display: inline-block;
 	padding: 0.75em;
 	margin-left:12px;
+	margin-right:2px;
 	background-color: black;
 	color: white;
+	text-align: center;
 	width: 120px;
 	border-radius: 4px;
 }
