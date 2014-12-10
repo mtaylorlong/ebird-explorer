@@ -10,6 +10,7 @@ html body {
 
 #header {
 	position:absolute;
+	overflow:auto;
 	top:0;
 	left:0;
 	right:0;
@@ -18,7 +19,7 @@ html body {
 }
 
 #title {
-	display: inline-block;
+	float:left;
 }
 
 #title H1 {
@@ -28,27 +29,22 @@ html body {
 }
 
 #nav {
-	display: inline;
 	float: right;
-	margin-top:0;
-	margin-bottom:0;
+}
+
+#nav ul {
+	margin:0;
 }
 
 #nav li {
 	display: inline-block;
 	padding: 0.75em;
 	margin-left:12px;
-	margin-right:2px;
 	background-color: black;
 	color: white;
 	text-align: center;
 	width: 120px;
 	border-radius: 4px;
-}
-
-#nav ul {
-	margin-top:0;
-	margin-bottom:0;
 }
 
 #map {
