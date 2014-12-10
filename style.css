@@ -66,3 +66,7 @@ html body {
 	background-color: #efefef;
 }
 */
+
+div.cartodb-legend.choropleth li.min {
+	margin: 0 15px 5px;
+}

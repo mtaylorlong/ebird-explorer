@@ -6,8 +6,9 @@
     <!--Edit the title of the page-->
     <title>eBird Explorer</title>
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -27,17 +28,59 @@
     <!-- Map -->
     <div id="map"></div>
 
+    <!-- Legend -->
+    <div class='cartodb-legend choropleth'> 
+        <div class="legend-title">eBird Data Coverage</div>
+        <ul>
+            <li class="min">Poor</li>
+            <li class="min">Moderate</li>
+            <li class="min">Good</li>
+            <li class="graph count_189">
+                <div class="colors">
+                    <div class="quartile" style="background-color:#B81609"></div>
+                    <div class="quartile" style="background-color:#FF6600"></div>
+                    <div class="quartile" style="background-color:#FFFFFF"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
     <!-- JavaScript Section-->
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
 
     <script type="text/javascript">
 
-        var map = new L.map('map').setView([44.98,-93.26], 10);
+        // LEAFLET STAMEN BASEMAP
+        // var map = new L.map('map').setView([44.98,-93.26], 10);
 
-        var layer = new L.StamenTileLayer("terrain");
-        map.addLayer(layer);
+        // var layer = new L.StamenTileLayer("terrain");
+        // map.addLayer(layer);
 
+        // CARTODB EASY MAP
+        // get the viz.json url from the CartoDB Editor
+        // - click on visualize
+        // - create new visualization
+        // - make visualization public
+        // - click on publish
+        // - go to API tab
+        window.onload = function() {
+          cartodb.createVis('map', 'http://mtaylorlong.cartodb.com/api/v2/viz/81f31a2a-8021-11e4-8fc1-0e4fddd5de28/viz.json');
+        }
+
+    </script>
+
+    <script>
+        // get the viz.json url from the CartoDB Editor
+        // - click on visualize
+        // - create new visualization
+        // - make visualization public
+        // - click on publish
+        // - go to API tab
+        window.onload = function() {
+          cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
+        }
     </script>
 
 </body>
