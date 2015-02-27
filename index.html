@@ -29,7 +29,7 @@
     <div id="map"></div>
 
     <!-- Legend -->
-    <div class='cartodb-legend choropleth'> 
+ <!--    <div class='cartodb-legend choropleth'> 
         <div class="legend-title">eBird Data Coverage</div>
         <ul>
             <li class="min">Poor</li>
@@ -43,6 +43,15 @@
                 </div>
             </li>
         </ul>
+    </div> -->
+
+    <div id="layer-filter">
+        <ul>
+            <li data="0" class="selected">All</li>
+            <li data="0.00001">Poor</li>
+            <li data="0.00005">Moderate</li>
+            <li data="10">Good</li>
+        </ul>
     </div>
 
     <!-- JavaScript Section-->
@@ -52,10 +61,10 @@
 
     <script type="text/javascript">
 
-        // LEAFLET STAMEN BASEMAP
-        // var map = new L.map('map').setView([44.98,-93.26], 10);
+        //LEAFLET STAMEN BASEMAP
+        // var map = new L.map('map').setView([40,-98], 4);
 
-        // var layer = new L.StamenTileLayer("terrain");
+        // var layer = new L.StamenTileLayer("toner-lite");
         // map.addLayer(layer);
 
         // CARTODB EASY MAP
@@ -65,9 +74,53 @@
         // - make visualization public
         // - click on publish
         // - go to API tab
-        window.onload = function() {
-          cartodb.createVis('map', 'http://mtaylorlong.cartodb.com/api/v2/viz/81f31a2a-8021-11e4-8fc1-0e4fddd5de28/viz.json');
+        // window.onload = function() {
+        //   cartodb.createVis('map', 'http://mtaylorlong.cartodb.com/api/v2/viz/81f31a2a-8021-11e4-8fc1-0e4fddd5de28/viz.json', {
+        //         cartodb_logo: false
+        //   });
+        // }
+
+        // create layer selector
+        function createSelector(layer) {
+            var sql = new cartodb.SQL({ user: 'mtaylorlong' });
+            var $options = $('#layer-filter li');
+           
+            $options.click(function(e) {
+                // get the area of the selected layer
+                var $li = $(e.target);
+                var limit = $li.attr('data');
+            
+                // deselect all and select the clicked one
+                $options.removeClass('selected');
+                $li.addClass('selected');
+            
+                // create query based on data from the layer
+                var query = "select * from county";
+                if(limit !== '0') {
+                    query = "select * from county where list_km <= " + limit;
+                }
+                // change the query in the layer to update the map
+                layer.setSQL(query);
+                });
         }
+
+        function main() {
+        cartodb.createVis('map', 'http://mtaylorlong.cartodb.com/api/v2/viz/81f31a2a-8021-11e4-8fc1-0e4fddd5de28/viz.json', {
+            tiles_loader: true,
+            center_lat: 40,
+            center_lon: -98,
+            zoom: 4
+        })
+        .done(function(vis, layers) {
+            // layer 0 is the base layer, layer 1 is cartodb layer
+            var subLayer = layers[1].getSubLayer(0);
+            createSelector(subLayer);
+        })
+        .error(function(err) {
+            console.log(err);
+            });
+      }
+      window.onload = main;
 
     </script>
 
