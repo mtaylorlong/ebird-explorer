@@ -47,7 +47,7 @@
 
     <div id="layer-filter">
         <ul>
-            <li data="0" class="selected">All</li>
+            <li data="all" class="selected">All</li>
             <li data="0.00001">Poor</li>
             <li data="0.00005">Moderate</li>
             <li data="10">Good</li>
@@ -95,8 +95,8 @@
                 $li.addClass('selected');
             
                 // create query based on data from the layer
-                var query = "select * from county";
-                if(limit !== '0') {
+                var query = "SELECT * FROM county";
+                if(limit !== 'all') {
                     query = "select * from county where list_km <= " + limit;
                 }
                 // change the query in the layer to update the map
@@ -106,7 +106,6 @@
 
         function main() {
         cartodb.createVis('map', 'http://mtaylorlong.cartodb.com/api/v2/viz/81f31a2a-8021-11e4-8fc1-0e4fddd5de28/viz.json', {
-            tiles_loader: true,
             center_lat: 40,
             center_lon: -98,
             zoom: 4
