@@ -15,7 +15,7 @@
 
     <!-- Header -->
     <div id="header">
-        <div id="title"><h1>eBird Explorer</h1></div>
+        <div id="title"><h1>eBird Underbirded Counties</h1></div>
         <div id="nav">
             <ul>
                 <li>How it Works</li>
@@ -76,6 +76,7 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+    <script src="Chart.js-master/Chart.js"></script>
 
     <script type="text/javascript">
 
@@ -110,21 +111,73 @@
         // var brkcol2 = '#41B6C4'; //turquoise
         // var brkcol3 = '#FFFFCC'; //yellow
 
-        var brkcol1 = '#990000'; //red
-        var brkcol2 = '#ccb700'; //yellow
-        var brkcol3 = 'rgba(0,153,0,0.25)'; //clear
+        var brkcol1 = 'rgba(153,0,0,0.8)'; //red
+        var brkcol2 = 'rgba(204,183,0,0.8)'; //yellow
+        var brkcol3 = 'rgba(0,153,0,0.25)'; //red translucent
 
         cssOrig = '#county_merge {polygon-fill:'+brkcol3+';'+
                     'polygon-opacity: 0.8;'+
                     'line-color: #FFFFFF;'+
                     'line-width: 0.5;'+
                     'line-opacity: 0.5;}'+
+
                     '#county_merge [yr_obstotal <='+yrbreak3+'] {'+
                     'polygon-fill:'+brkcol3+';}'+
+
                     '#county_merge [yr_obstotal <='+yrbreak2+'] {'+
                     'polygon-fill:'+brkcol2+';}'+
+
                     '#county_merge [yr_obstotal <='+yrbreak1+'] {'+
                     'polygon-fill:'+brkcol1+';}';
+
+        var myInfoTemplate = [
+            '<div class="cartodb-popup">',
+                '<a href="#close" class="cartodb-popup-close-button close">x</a>',
+                '<div class="cartodb-popup-content-wrapper">',
+                    '<div class="cartodb-popup-header">',
+                        '<h2>{{content.data.name}} Co., {{content.data.state}}</h2>',
+                    '</div>',
+                    '<div class="cartodb-popup-content">',
+                        '<p style="font-size:1.5em"><strong>{{content.data.yr_obstotal}}</strong> lists in 2013</p>',
+                        '<p style="font-size:1.5em">Lists by month:</p>',
+                        '<canvas id="myChart" width="190" height="110">',
+                            '<script>',
+                                'var obsdata = {',
+                                    'labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],',
+                                    'datasets: [',
+                                    '{   label: "My First dataset",',
+                                        'fillColor: "rgba(0,0,0,1)",',
+                                        'highlightFill: "rgba(0,0,0,0.5)",',
+                                        'data: [',
+                                            '{{jan_obstotal}}, ',
+                                            '{{feb_obstotal}}, ',
+                                            '{{mar_obstotal}}, ',
+                                            '{{apr_obstotal}}, ',
+                                            '{{may_obstotal}}, ',
+                                            '{{jun_obstotal}}, ',
+                                            '{{jul_obstotal}}, ',
+                                            '{{aug_obstotal}}, ',
+                                            '{{sep_obstotal}}, ',
+                                            '{{oct_obstotal}}, ',
+                                            '{{nov_obstotal}}, ',
+                                            '{{dec_obstotal}}, ',
+                                        ']',
+                                    '}]};',
+                                'var ctx = document.getElementById("myChart").getContext("2d");',
+                                'var myNewChart = new Chart(ctx).Bar(obsdata, {',
+                                    'showScale: true,',
+                                    'scaleShowLabels: false,',
+                                    'barShowStroke: false,',
+                                    'scaleShowGridLines: false,',
+                                    'barValueSpacing: 1',
+                                '});',
+                            '</scr'+'ipt>',
+                        '</canvas>',
+                    '</div>',
+                '</div>',
+                '<div class="cartodb-popup-tip-container"></div>',
+            '</div>'
+        ].join('');
 
         // create layer selector
         function createSelector(layer) {
@@ -176,6 +229,11 @@
         .done(function(vis, layers) {
             // layer 0 is the base layer, layer 1 is cartodb layer
             var subLayer = layers[1].getSubLayer(0);
+            var sql = new cartodb.SQL({ user: 'mtaylorlong' });
+            var query = "SELECT * FROM county_merge WHERE state != 'AK' AND name IS NOT NULL";
+            subLayer.setSQL(query);
+            subLayer.setCartoCSS(cssOrig);
+            subLayer.infowindow.set('template', myInfoTemplate);
             createSelector(subLayer);
         })
         .error(function(err) {
