@@ -77,14 +77,46 @@ html body {
 }
 
 #layer-filter li:hover {
-	background-color: #addced;
-	cursor: pointer;
+	background-color: #999;
+	cursor:pointer;
 }
 
 #layer-filter li.selected {
-	background-color: #5cd3e0;
+	background-color: #000;
+	color:#FFF;
 }
 
+#month-filter {
+	position: absolute;
+	bottom: 25px;
+	left: 125px;
+	background-color: #fff;
+	border: 1px solid #999;
+	border-radius: 4px;
+	padding-left:5px;
+}
+
+#month-filter ul {
+  padding:0;
+  margin:0;
+}
+
+#month-filter li {
+	padding: 10px;
+	margin-left:-5px;
+	display:inline-block;
+	border-right: 1px solid #999;
+}
+
+#month-filter li:hover {
+	background-color: #999;
+	cursor:pointer;
+}
+
+#month-filter li.selected {
+	background-color: #000;
+	color:#FFF;
+}
 /*#footer {
 	position: absolute;
 	bottom: 0px;

@@ -54,6 +54,24 @@
         </ul>
     </div>
 
+    <div id="month-filter">
+        <ul>
+            <li data="yr" class="selected">2013</li>
+            <li data="jan">Jan</li>
+            <li data="feb">Feb</li>
+            <li data="mar">Mar</li>
+            <li data="apr">Apr</li>
+            <li data="may">May</li>
+            <li data="jun">Jun</li>
+            <li data="jul">Jul</li>
+            <li data="aug">Aug</li>
+            <li data="sep">Sep</li>
+            <li data="oct">Oct</li>
+            <li data="nov">Nov</li>
+            <li data="dec">Dec</li>
+        </ul>
+    </div>
+
     <!-- JavaScript Section-->
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
@@ -80,32 +98,77 @@
         //   });
         // }
 
+        var break1 = '0';
+        var break2 = '5';
+        var break3 = '10';
+
+        var yrbreak1 = '12';
+        var yrbreak2 = '60';
+        var yrbreak3 = '120';
+
+        // var brkcol1 = '#253494'; //dark blue
+        // var brkcol2 = '#41B6C4'; //turquoise
+        // var brkcol3 = '#FFFFCC'; //yellow
+
+        var brkcol1 = '#990000'; //red
+        var brkcol2 = '#ccb700'; //yellow
+        var brkcol3 = 'rgba(0,153,0,0.25)'; //clear
+
+        cssOrig = '#county_merge {polygon-fill:'+brkcol3+';'+
+                    'polygon-opacity: 0.8;'+
+                    'line-color: #FFFFFF;'+
+                    'line-width: 0.5;'+
+                    'line-opacity: 0.5;}'+
+                    '#county_merge [yr_obstotal <='+yrbreak3+'] {'+
+                    'polygon-fill:'+brkcol3+';}'+
+                    '#county_merge [yr_obstotal <='+yrbreak2+'] {'+
+                    'polygon-fill:'+brkcol2+';}'+
+                    '#county_merge [yr_obstotal <='+yrbreak1+'] {'+
+                    'polygon-fill:'+brkcol1+';}';
+
         // create layer selector
         function createSelector(layer) {
-            var sql = new cartodb.SQL({ user: 'mtaylorlong' });
-            var $options = $('#layer-filter li');
+            //var sql = new cartodb.SQL({ user: 'mtaylorlong' });
+            var $options = $('#month-filter li');
            
             $options.click(function(e) {
                 // get the area of the selected layer
                 var $li = $(e.target);
-                var limit = $li.attr('data');
+                var month = $li.attr('data');
             
                 // deselect all and select the clicked one
                 $options.removeClass('selected');
                 $li.addClass('selected');
             
                 // create query based on data from the layer
-                var query = "SELECT * FROM county";
-                if(limit !== 'all') {
-                    query = "select * from county where list_km <= " + limit;
-                }
+                //var query = "SELECT * FROM county_merge";
+                var css = '';
+
+                if(month !== 'yr') {
+                    css = '#county_merge {polygon-fill:'+brkcol3+';'+
+                    'polygon-opacity: 0.8;'+
+                    'line-color: #FFFFFF;'+
+                    'line-width: 0.5;'+
+                    'line-opacity: 0.5;}'+
+                    '#county_merge ['+month+'_obstotal <='+break3+'] {'+
+                    'polygon-fill:'+brkcol3+';}'+
+                    '#county_merge ['+month+'_obstotal <='+break2+'] {'+
+                    'polygon-fill:'+brkcol2+';}'+
+                    '#county_merge ['+month+'_obstotal <='+break1+'] {'+
+                    'polygon-fill:'+brkcol1+';}'
+                } else {
+                    css = cssOrig   
+                };
+                
                 // change the query in the layer to update the map
-                layer.setSQL(query);
+                //layer.setSQL(query);
+                layer.setCartoCSS(css);
                 });
         }
 
+        //Create main function
         function main() {
-        cartodb.createVis('map', 'http://mtaylorlong.cartodb.com/api/v2/viz/81f31a2a-8021-11e4-8fc1-0e4fddd5de28/viz.json', {
+        cartodb.createVis('map', 'http://mtaylorlong.cartodb.com/api/v2/viz/67031608-c044-11e4-bbeb-0e0c41326911/viz.json', {
             center_lat: 40,
             center_lon: -98,
             zoom: 4
@@ -118,8 +181,38 @@
         .error(function(err) {
             console.log(err);
             });
-      }
-      window.onload = main;
+        }
+
+        //Main function
+        window.onload = main;
+
+        //-----------------------------------------------------
+        // create a layer with 1 sublayer
+        // function main() {
+
+        // }
+        // window.onload = main;
+
+        // cartodb.createLayer(map, {
+        //   user_name: 'mtaylorlong',
+        //   type: 'cartodb',
+        //   sublayers: [{
+        //     sql: "SELECT * FROM county",
+        //     cartocss: '#county {marker-fill: #F0F0F0;}'
+        //   }]
+        // })
+        // .addTo(map) // add the layer to our map which already contains 1 sublayer
+        // .done(function(layer) {
+
+        //   // create and add a new sublayer
+        //   layer.createSubLayer({
+        //     sql: "SELECT * FROM county limit 200",
+        //     cartocss: '#county {marker-fill: #F0F0F0;}'
+        //   });
+
+        //   // change the query for the first layer
+        //   // layer.getSubLayer(0).setSQL("SELECT * FROM #county limit 10");
+        // });
 
     </script>
 
