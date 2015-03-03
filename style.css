@@ -29,6 +29,7 @@ html body {
 
 }
 
+/*Navigation Links*/
 #nav {
 	float: right;
 }
@@ -50,8 +51,10 @@ html body {
 
 #nav li:hover {
 	background-color: rgba(0,0,0,0.5);
+	cursor: pointer;
 }
 
+/*Main Map*/
 #map {
 	position: absolute;
 	bottom: 0;
@@ -62,6 +65,7 @@ html body {
 	background-color: gray;
 }
 
+/*Legend Filter*/
 #layer-filter {
 	position: absolute;
 	bottom: 25px;
@@ -92,10 +96,11 @@ html body {
 	color:#FFF;
 }
 
+/*Month Selector*/
 #month-filter {
 	position: absolute;
-	bottom: 25px;
-	left: 125px;
+	bottom: 30px;
+	left: 30px;
 	background-color: #fff;
 	border: 1px solid #999;
 	border-radius: 4px;
@@ -105,6 +110,7 @@ html body {
 #month-filter ul {
   padding:0;
   margin:0;
+  list-style-type: none;
 }
 
 #month-filter li {
