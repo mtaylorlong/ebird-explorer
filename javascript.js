@@ -52,7 +52,7 @@ cssOrig = '#county_merge {polygon-fill:'+brkcol3+';'+
             'polygon-fill:'+brkcol1+';}';
 
 // A horribly cumbersome way to set up my infowindow template
-var myInfoTemplate = [
+var myInfoTemplateX = [
     '<div class="cartodb-popup">',
         '<a href="#close" class="cartodb-popup-close-button close">x</a>',
         '<div class="cartodb-popup-content-wrapper">',
@@ -100,6 +100,58 @@ var myInfoTemplate = [
         '<div class="cartodb-popup-tip-container"></div>',
     '</div>'
 ].join('');
+
+// Second try at simpler info template
+var myInfoTemplate = '\
+    <div class="cartodb-popup">\
+        <a href="#close" class="cartodb-popup-close-button close">x</a>\
+        <div class="cartodb-popup-content-wrapper">\
+            <div class="cartodb-popup-header">\
+                <h2>{{content.data.name}} Co., {{content.data.state}}</h2>\
+            </div>\
+            <div class="cartodb-popup-content">\
+                <p style="font-size:1.5em"><strong>{{content.data.yr_obstotal}}</strong> lists in 2013</p>\
+                <p style="font-size:1.5em">Lists by month:</p>\
+                <canvas id="myChart" width="190" height="110">\
+                    <script>\
+                        var obsdata = {\
+                            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],\
+                            datasets: [\
+                            {   label: "My First dataset",\
+                                fillColor: "rgba(0,0,0,1)",\
+                                highlightFill: "rgba(0,0,0,0.5)",\
+                                data: [\
+                                    {{jan_obstotal}},\
+                                    {{feb_obstotal}},\ 
+                                    {{mar_obstotal}},\ 
+                                    {{apr_obstotal}},\ 
+                                    {{may_obstotal}},\ 
+                                    {{jun_obstotal}},\ 
+                                    {{jul_obstotal}},\ 
+                                    {{aug_obstotal}},\ 
+                                    {{sep_obstotal}},\ 
+                                    {{oct_obstotal}},\ 
+                                    {{nov_obstotal}},\
+                                    {{dec_obstotal}},\
+                                ]\
+                            }]};\
+                        var ctx = document.getElementById("myChart").getContext("2d");\
+                        var myNewChart = new Chart(ctx).Bar(obsdata, {\
+                            showScale: true,\
+                            scaleShowLabels: false,\
+                            barShowStroke: false,\
+                            scaleShowGridLines: false,\
+                            barValueSpacing: 1\
+                        });\
+                    </script>\
+                </canvas>\
+            </div>\
+        </div>\
+        <div class="cartodb-popup-tip-container"></div>\
+    </div>';
+
+console.log(myInfoTemplate);
+console.log(myInfoTemplateX);
 
 // create layer selector
 function createSelector(layer) {
